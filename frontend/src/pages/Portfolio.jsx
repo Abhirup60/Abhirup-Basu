@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ArrowUp } from "lucide-react"; // install with: npm install lucide-react
+import { ArrowUp } from "lucide-react"; 
 import Loader from "../components/Loader";
 import profileImg from "../assets/react.svg";
 

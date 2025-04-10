@@ -1,18 +1,7 @@
-import React from 'react';
-import { InfinitySpin  } from 'react-loader-spinner'; 
-
-const Loader = () => {
-  return (
-    <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
-      <InfinitySpin 
-        color="#33991d"
-        size="100"
-        text="Loading..."
-        textColor="#a7cd21"
-        visible={true}
-      />
-    </div>
-  );
-};
+const Loader = () => (
+  <div className="flex justify-center items-center h-screen bg-[#0e0b1f]">
+    <div className="w-12 h-12 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
 
 export default Loader;

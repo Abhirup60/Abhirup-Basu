@@ -14,7 +14,6 @@
     "lucide-react": "^0.487.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-loader-spinner": "^6.1.6",
     "react-router-dom": "^7.4.1",
     "react-scroll-parallax": "^3.4.5",
     "react-simple-typewriter": "^5.0.1"
