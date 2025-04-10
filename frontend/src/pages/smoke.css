@@ -1,0 +1,58 @@
+/* smoke.css */
+
+.smoke-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 20%, rgba(128, 90, 213, 0.05), transparent),
+                radial-gradient(circle at 80% 80%, rgba(128, 90, 213, 0.05), transparent),
+                rgba(14, 11, 31, 1);
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  
+  .smoke {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(ellipse at center, rgba(128, 90, 213, 0.2) 0%, transparent 70%);
+    animation: smoke 30s infinite;
+    border-radius: 50%;
+    opacity: 0.3;
+    filter: blur(50px);
+  }
+  
+  .smoke:nth-child(1) {
+    top: 10%;
+    left: 20%;
+    animation-delay: 0s;
+  }
+  .smoke:nth-child(2) {
+    top: 50%;
+    left: 70%;
+    animation-delay: 5s;
+  }
+  .smoke:nth-child(3) {
+    top: 70%;
+    left: 30%;
+    animation-delay: 10s;
+  }
+  
+  @keyframes smoke {
+    0% {
+      transform: scale(1) translateY(0);
+      opacity: 0.3;
+    }
+    50% {
+      transform: scale(1.2) translateY(-20px);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1) translateY(0);
+      opacity: 0.3;
+    }
+  }
+  

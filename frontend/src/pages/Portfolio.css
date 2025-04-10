@@ -1,0 +1,52 @@
+.smoky-cursor {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    border-radius: 9999px;
+    background: linear-gradient(45deg, red, blue);
+    background-size: 400% 400%;
+    animation: gradientShift 4s ease infinite;
+    pointer-events: none;
+    filter: blur(15px);
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    transition: transform 0.08s ease;
+  }
+  
+  .cursor-trail {
+    position: fixed;
+    width: 25px;
+    height: 25px;
+    border-radius: 9999px;
+    background: linear-gradient(45deg, rgba(255, 0, 0, 0.3), rgba(0, 0, 255, 0.3));
+    filter: blur(10px);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 999;
+    animation: fadeTrail 0.7s ease-out forwards;
+  }
+  
+  @keyframes fadeTrail {
+    from {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(1.5);
+    }
+  }
+  
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
