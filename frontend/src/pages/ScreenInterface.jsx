@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import InterfaceLoader from "../components/InterfaceLoader";
+import defaultWallpaper from "../assets/defaultWallpaper.jpg";
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -51,7 +52,10 @@ const App = () => {
   const { isMobile, isTablet } = screenSize;
 
   return (
-    <div className="h-screen w-full bg-[url('defaultWallpaper.jpg')] bg-cover bg-center relative overflow-hidden">
+    <div
+      className='h-screen w-full bg-cover bg-center relative overflow-hidden'
+      style={{ backgroundImage: `url(${defaultWallpaper})` }}
+    >
       {/* Desktop Icons (Now at Top-Left Corner) */}
       <div className={`absolute text-white flex flex-col gap-6 md:gap-8 left-6 top-6 items-start`}>
         <Link to={"https://www.google.com/"}>
@@ -59,10 +63,10 @@ const App = () => {
           Chrome
         </Link>
 
-      <Link to={"https://www.google.com/"}>
-      <img src='recycle-bin.webp' alt='Recycle Bin' className='h-10 w-10 cursor-pointer' />
-      Recycle Bin
-      </Link>
+        <Link to={"https://www.google.com/"}>
+          <img src='recycle-bin.webp' alt='Recycle Bin' className='h-10 w-10 cursor-pointer' />
+          Recycle Bin
+        </Link>
         <Link to={"https://vscode.dev/"}>
           <img src='vsCode.png' alt='VS Code' className='h-10 w-10 cursor-pointer' />
           VS Code
