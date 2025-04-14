@@ -303,19 +303,19 @@ const Portfolio = () => {
               tech: "HTML, CSS, JavaScript"
             },
             { 
-              title: "IOT Project", 
-              description: "Internet of Things applications connecting physical devices",
-              tech: "Arduino, Raspberry Pi"
+              title: "Chat Application", 
+              description: "Real-time chat app application using socket.io, Authentication with JWT",
+              tech: "React, Node, Express, MongoDB, socket.io"
             },
             { 
-              title: "Voice Assistance", 
-              description: "Voice-controlled applications using speech recognition",
-              tech: "Python, Speech Recognition"
+              title: "Alumni Website(GMIT)", 
+              description: "Interactive websites with server-side functionality and databases and Authentication with JWT",
+              tech: "React, Node, Express, MongoDB"
             },
             { 
-              title: "Weather App", 
-              description: "Real-time weather information application",
-              tech: "React, Weather API"
+              title: "Social Media", 
+              description: "Interactive websites with server-side functionality and database, Like-Unlike & follow-unfollow functionalities also Post option is there and Authentication with JWT",
+              tech: "React, Node, Express, MongoDB"
             },
           ].map((work, index) => (
             <motion.div
