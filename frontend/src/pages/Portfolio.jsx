@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ArrowUp, Mail, Phone, MapPin } from "lucide-react"; 
+import { ArrowUp, Mail, Phone, MapPin, Menu, X } from "lucide-react"; // Added Menu and X icons
 import Loader from "../components/Loader";
 
 const ScrollToTop = () => {
@@ -42,6 +42,7 @@ const AnimatedBackground = () => {
 
 const Portfolio = () => {
   const [loading, setLoading] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // State for mobile menu
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
@@ -55,7 +56,8 @@ const Portfolio = () => {
       <AnimatedBackground />
       
       {/* Header Section */}
-      <header className="py-6 px-4 md:px-16 flex justify-between items-center sticky top-0 bg-[#0e0b1f]/80 backdrop-blur-sm z-50">
+     {/* Header Section */}
+     <header className="py-6 px-4 md:px-16 flex justify-between items-center sticky top-0 bg-[#0e0b1f]/80 backdrop-blur-sm z-50">
         <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Abhirup Basu</h1>
         <nav className="flex items-center space-x-4 md:space-x-8">
           <div className="hidden md:flex space-x-6">
@@ -67,8 +69,56 @@ const Portfolio = () => {
           <button className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-md hover:from-purple-700 hover:to-pink-700 transition-all text-sm shadow-lg">
             Download CV
           </button>
+          
+          {/* Mobile menu button */}
+          <button 
+            className="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </nav>
       </header>
+
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-40 bg-[#0e0b1f]/95 backdrop-blur-sm pt-20 px-6">
+          <div className="flex flex-col space-y-6 text-xl">
+            <a 
+              href="#about" 
+              className="hover:text-purple-400 transition-colors py-2 border-b border-[#281f54]"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              About
+            </a>
+            <a 
+              href="#works" 
+              className="hover:text-purple-400 transition-colors py-2 border-b border-[#281f54]"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Works
+            </a>
+            <a 
+              href="#skills" 
+              className="hover:text-purple-400 transition-colors py-2 border-b border-[#281f54]"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Skills
+            </a>
+            <a 
+              href="#contact" 
+              className="hover:text-purple-400 transition-colors py-2 border-b border-[#281f54]"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Contact
+            </a>
+            <button className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 rounded-md hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg mt-4">
+              Download CV
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <section id="about" className="text-center py-12 md:py-20 px-4 max-w-4xl mx-auto">
@@ -119,19 +169,19 @@ const Portfolio = () => {
               tech: "HTML, CSS, JavaScript"
             },
             { 
-              title: "IOT Project", 
-              description: "Internet of Things applications connecting physical devices",
-              tech: "Arduino, Raspberry Pi"
+              title: "Social Media App", 
+              description: "Real-time like-Unlike ,follow-Unfollow and any post information application",
+              tech: "React, Node, MongoDB, Express"
             },
             { 
-              title: "Voice Assistance", 
-              description: "Voice-controlled applications using speech recognition",
-              tech: "Python, Speech Recognition"
+              title: "Alumni Website(GMIT)", 
+              description: "Interactive websites with server-side functionality and databases",
+              tech: "React, Node, MongoDB, Express"
             },
             { 
-              title: "Weather App", 
-              description: "Real-time weather information application",
-              tech: "React, Weather API"
+              title: "Chat Application", 
+              description: "Real time Interactive app with server-side functionality and databases",
+              tech: "React, Node, MongoDB, Express and Socket.io"
             },
           ].map((work, index) => (
             <div
@@ -194,9 +244,9 @@ const Portfolio = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {[
             "C", "C++", "JavaScript", "MongoDB", "Node.js", "Express.js",
-            "React.js", "SQL", "Figma", "HTML5", "CSS3", "Python",
-            "Java", "Spring Boot", "Next.js", "Git", "Tailwind CSS",
-            "Redux", "TypeScript", "Docker"
+            "React.js", "SQL", "Figma", "Python",
+            "Java (Learning)", "Spring Boot (Learning)", "Next.js (Learning)", "Git", "Tailwind CSS",
+            "Redux", "TypeScript (Learning)", "Docker (Learning)"
           ].map((skill, index) => (
             <div 
               key={index} 
@@ -227,19 +277,15 @@ const Portfolio = () => {
           {[
             { 
               title: "Research Paper", 
-              description: "Published paper on emerging web technologies",
-              year: "2024"
+              description: "Published paper on emerging Machine Learning",
+              year: "2025"
             },
             { 
-              title: "Hackathon", 
-              description: "Participated in national level coding competition",
-              year: "2023"
-            },
-            { 
-              title: "Open Source", 
-              description: "Contributed to various open source projects",
+              title: "Coding Competition", 
+              description: "Participated in coding competition",
               year: "2024"
             },
+            
           ].map((activity, index) => (
             <div key={index} className="bg-[#1b1638]/50 p-6 rounded-lg border border-[#281f54] hover:border-purple-500/30 transition-all hover:scale-[1.02]">
               <p className="text-lg font-semibold mb-2">{activity.title}</p>
