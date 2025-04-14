@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-// import { motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import InterfaceLoader from "../components/InterfaceLoader";
 import defaultWallpaper from "../assets/defaultWallpaper.jpg";

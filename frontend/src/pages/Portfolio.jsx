@@ -1,6 +1,58 @@
 import React, { useEffect, useState } from "react";
-import { ArrowUp, Mail, Phone, MapPin, Menu, X } from "lucide-react"; // Added Menu and X icons
+import { motion, useScroll, useAnimation, AnimatePresence } from "framer-motion";
+import { ArrowUp, Mail, Phone, MapPin, Menu, X } from "lucide-react";
 import Loader from "../components/Loader";
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      when: "beforeChildren"
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  }
+};
+
+const fadeInVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1, 
+    transition: { 
+      duration: 0.8,
+      ease: "easeOut"
+    } 
+  }
+};
+
+const cardVariants = {
+  offscreen: {
+    y: 50,
+    opacity: 0
+  },
+  onscreen: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      bounce: 0.4,
+      duration: 0.8
+    }
+  }
+};
 
 const ScrollToTop = () => {
   const [visible, setVisible] = useState(false);
@@ -19,15 +71,19 @@ const ScrollToTop = () => {
   };
 
   return (
-    <button
+    <motion.button
       onClick={scrollToTop}
-      className={`fixed bottom-6 right-6 p-3 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg transition-all duration-300 ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
-      }`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ 
+        opacity: visible ? 1 : 0,
+        y: visible ? 0 : 20
+      }}
+      transition={{ duration: 0.3 }}
+      className="fixed bottom-6 right-6 p-3 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-lg z-50"
       aria-label="Scroll to top"
     >
       <ArrowUp size={20} />
-    </button>
+    </motion.button>
   );
 };
 
@@ -42,7 +98,8 @@ const AnimatedBackground = () => {
 
 const Portfolio = () => {
   const [loading, setLoading] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // State for mobile menu
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
@@ -55,107 +112,184 @@ const Portfolio = () => {
     <div className="min-h-screen text-white font-sans relative overflow-x-hidden">
       <AnimatedBackground />
       
+      {/* Scroll progress indicator */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 origin-left z-50"
+        style={{ scaleX: scrollYProgress }}
+      />
+
       {/* Header Section */}
-     {/* Header Section */}
-     <header className="py-6 px-4 md:px-16 flex justify-between items-center sticky top-0 bg-[#0e0b1f]/80 backdrop-blur-sm z-50">
-        <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Abhirup Basu</h1>
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, type: "spring" }}
+        className="py-6 px-4 md:px-16 flex justify-between items-center sticky top-0 bg-[#0e0b1f]/80 backdrop-blur-sm z-50"
+      >
+        <motion.h1 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent"
+        >
+          Abhirup Basu
+        </motion.h1>
         <nav className="flex items-center space-x-4 md:space-x-8">
           <div className="hidden md:flex space-x-6">
-            <a href="#about" className="hover:text-purple-400 transition-colors">About</a>
-            <a href="#works" className="hover:text-purple-400 transition-colors">Works</a>
-            <a href="#skills" className="hover:text-purple-400 transition-colors">Skills</a>
-            <a href="#contact" className="hover:text-purple-400 transition-colors">Contact</a>
+            <motion.a 
+              whileHover={{ scale: 1.05, color: "#c084fc" }}
+              href="#about" 
+              className="hover:text-purple-400 transition-colors"
+            >
+              About
+            </motion.a>
+            <motion.a 
+              whileHover={{ scale: 1.05, color: "#c084fc" }}
+              href="#works" 
+              className="hover:text-purple-400 transition-colors"
+            >
+              Works
+            </motion.a>
+            <motion.a 
+              whileHover={{ scale: 1.05, color: "#c084fc" }}
+              href="#skills" 
+              className="hover:text-purple-400 transition-colors"
+            >
+              Skills
+            </motion.a>
+            <motion.a 
+              whileHover={{ scale: 1.05, color: "#c084fc" }}
+              href="#contact" 
+              className="hover:text-purple-400 transition-colors"
+            >
+              Contact
+            </motion.a>
           </div>
-          <button className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-md hover:from-purple-700 hover:to-pink-700 transition-all text-sm shadow-lg">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="hidden md:block bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-md hover:from-purple-700 hover:to-pink-700 transition-all text-sm shadow-lg"
+          >
             Download CV
-          </button>
+          </motion.button>
           
           {/* Mobile menu button */}
-          <button 
-            className="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+          <motion.button 
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="md:hidden p-2 rounded-md focus:outline-none"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          </motion.button>
         </nav>
-      </header>
+      </motion.header>
 
       {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-[#0e0b1f]/95 backdrop-blur-sm pt-20 px-6">
-          <div className="flex flex-col space-y-6 text-xl">
-            <a 
-              href="#about" 
-              className="hover:text-purple-400 transition-colors py-2 border-b border-[#281f54]"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              About
-            </a>
-            <a 
-              href="#works" 
-              className="hover:text-purple-400 transition-colors py-2 border-b border-[#281f54]"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Works
-            </a>
-            <a 
-              href="#skills" 
-              className="hover:text-purple-400 transition-colors py-2 border-b border-[#281f54]"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Skills
-            </a>
-            <a 
-              href="#contact" 
-              className="hover:text-purple-400 transition-colors py-2 border-b border-[#281f54]"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Contact
-            </a>
-            <button className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 rounded-md hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg mt-4">
-              Download CV
-            </button>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden fixed inset-0 z-40 bg-[#0e0b1f]/95 backdrop-blur-sm pt-20 px-6"
+          >
+            <div className="flex flex-col space-y-6 text-xl">
+              {[
+                { name: "About", href: "#about" },
+                { name: "Works", href: "#works" },
+                { name: "Skills", href: "#skills" },
+                { name: "Contact", href: "#contact" }
+              ].map((item, index) => (
+                <motion.a
+                  key={index}
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: index * 0.1 }}
+                  href={item.href}
+                  className="hover:text-purple-400 transition-colors py-2 border-b border-[#281f54]"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </motion.a>
+              ))}
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 rounded-md hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg mt-4"
+              >
+                Download CV
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section */}
-      <section id="about" className="text-center py-12 md:py-20 px-4 max-w-4xl mx-auto">
-        <div className="relative mx-auto w-32 h-32 mb-6">
+      <motion.section
+        id="about"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        className="text-center py-12 md:py-20 px-4 max-w-4xl mx-auto"
+      >
+        <motion.div variants={itemVariants} className="relative mx-auto w-32 h-32 mb-6">
           <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 blur-md animate-pulse opacity-30"></div>
-          <img
+          <motion.img
+            whileHover={{ scale: 1.05 }}
             src="https://avatars.githubusercontent.com/u/74038190?v=4"
             alt="Abhirup Basu"
             className="relative w-full h-full object-cover rounded-full border-2 border-purple-500/30"
           />
-        </div>
-        <h2 className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
+        </motion.div>
+        <motion.h2 variants={itemVariants} className="text-3xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
           I'm Abhirup Basu
-        </h2>
-        <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+        </motion.h2>
+        <motion.p variants={itemVariants} className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
           Web Developer | I bring ideas to life using clean and scalable code.
-        </p>
-        <div className="flex flex-wrap justify-center gap-4 md:gap-10">
+        </motion.p>
+        <motion.div variants={containerVariants} className="flex flex-wrap justify-center gap-4 md:gap-10">
           {[
             { value: "1", label: "Internships" },
             { value: "4+", label: "Completed Projects" },
             { value: "10", label: "Technologies" },
             { value: "60+", label: "Codeforces Problems" },
           ].map((item, index) => (
-            <div key={index} className="bg-[#1b1638]/50 p-4 rounded-lg backdrop-blur-sm border border-[#281f54] min-w-[120px]">
+            <motion.div 
+              key={index} 
+              variants={itemVariants}
+              whileHover={{ y: -5 }}
+              className="bg-[#1b1638]/50 p-4 rounded-lg backdrop-blur-sm border border-[#281f54] min-w-[120px]"
+            >
               <p className="text-2xl font-semibold text-purple-300">{item.value}</p>
               <p className="text-gray-400 text-sm">{item.label}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
       {/* My Quality Works */}
-      <section id="works" className="px-4 md:px-16 py-12 max-w-6xl mx-auto">
-        <h3 className="text-2xl md:text-3xl font-bold mb-8 text-center md:text-left">
+      <motion.section
+        id="works"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={fadeInVariants}
+        className="px-4 md:px-16 py-12 max-w-6xl mx-auto"
+      >
+        <motion.h3 
+          whileInView={{ y: 0, opacity: 1 }}
+          initial={{ y: 20, opacity: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="text-2xl md:text-3xl font-bold mb-8 text-center md:text-left"
+        >
           My <span className="text-purple-300">Quality</span> Works
-        </h3>
+        </motion.h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             { 
@@ -169,23 +303,28 @@ const Portfolio = () => {
               tech: "HTML, CSS, JavaScript"
             },
             { 
-              title: "Social Media App", 
-              description: "Real-time like-Unlike ,follow-Unfollow and any post information application",
-              tech: "React, Node, MongoDB, Express"
+              title: "IOT Project", 
+              description: "Internet of Things applications connecting physical devices",
+              tech: "Arduino, Raspberry Pi"
             },
             { 
-              title: "Alumni Website(GMIT)", 
-              description: "Interactive websites with server-side functionality and databases",
-              tech: "React, Node, MongoDB, Express"
+              title: "Voice Assistance", 
+              description: "Voice-controlled applications using speech recognition",
+              tech: "Python, Speech Recognition"
             },
             { 
-              title: "Chat Application", 
-              description: "Real time Interactive app with server-side functionality and databases",
-              tech: "React, Node, MongoDB, Express and Socket.io"
+              title: "Weather App", 
+              description: "Real-time weather information application",
+              tech: "React, Weather API"
             },
           ].map((work, index) => (
-            <div
+            <motion.div
               key={index}
+              initial="offscreen"
+              whileInView="onscreen"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={cardVariants}
+              whileHover={{ y: -5 }}
               className="bg-[#1b1638]/50 hover:bg-[#281f54]/70 p-6 rounded-lg transition-all duration-300 border border-[#281f54] hover:border-purple-500/30 backdrop-blur-sm cursor-pointer group"
             >
               <h4 className="text-xl font-semibold mb-2 group-hover:text-purple-300 transition-colors">
@@ -193,15 +332,21 @@ const Portfolio = () => {
               </h4>
               <p className="text-sm text-gray-400 mb-3">{work.description}</p>
               <p className="text-xs text-purple-400/70">{work.tech}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </section>
+      </motion.section>
 
       {/* Experience and Education */}
-      <section className="px-4 md:px-16 py-12 max-w-6xl mx-auto">
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={containerVariants}
+        className="px-4 md:px-16 py-12 max-w-6xl mx-auto"
+      >
         <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-          <div>
+          <motion.div variants={itemVariants}>
             <h3 className="text-2xl font-bold mb-6 text-purple-300">My Experience</h3>
             <div className="space-y-4">
               {[
@@ -209,15 +354,19 @@ const Portfolio = () => {
                 { year: "2023", title: "Web Development Training", company: "Code Academy" },
                 { year: "2024", title: "Full Stack Developer Training", company: "Dev Masters" },
               ].map((exp, index) => (
-                <div key={index} className="bg-[#1b1638]/50 p-5 rounded-lg border border-[#281f54] hover:border-purple-500/30 transition-all">
+                <motion.div 
+                  key={index}
+                  whileHover={{ x: 5 }}
+                  className="bg-[#1b1638]/50 p-5 rounded-lg border border-[#281f54] hover:border-purple-500/30 transition-all"
+                >
                   <p className="text-purple-400 text-sm mb-1">{exp.year}</p>
                   <p className="font-semibold">{exp.title}</p>
                   <p className="text-gray-400 text-sm">{exp.company}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
-          <div>
+          </motion.div>
+          <motion.div variants={itemVariants}>
             <h3 className="text-2xl font-bold mb-6 text-purple-300">My Education</h3>
             <div className="space-y-4">
               {[
@@ -225,54 +374,125 @@ const Portfolio = () => {
                 { period: "2020 - 2022", degree: "Higher Secondary Education (XII)", institution: "Basirhat High School" },
                 { period: "2019 - 2020", degree: "Secondary Education (X)", institution: "Basirhat High School" },
               ].map((edu, index) => (
-                <div key={index} className="bg-[#1b1638]/50 p-5 rounded-lg border border-[#281f54] hover:border-purple-500/30 transition-all">
+                <motion.div 
+                  key={index}
+                  whileHover={{ x: 5 }}
+                  className="bg-[#1b1638]/50 p-5 rounded-lg border border-[#281f54] hover:border-purple-500/30 transition-all"
+                >
                   <p className="text-purple-400 text-sm mb-1">{edu.period}</p>
                   <p className="font-semibold">{edu.degree}</p>
                   <p className="text-gray-400 text-sm">{edu.institution}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Skills Section */}
-      <section id="skills" className="px-4 md:px-16 py-12 max-w-6xl mx-auto">
-        <h3 className="text-2xl md:text-3xl font-bold mb-8 text-center md:text-left">
+      <motion.section
+        id="skills"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInVariants}
+        className="px-4 md:px-16 py-12 max-w-6xl mx-auto"
+      >
+        <motion.h3 
+          whileInView={{ y: 0, opacity: 1 }}
+          initial={{ y: 20, opacity: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="text-2xl md:text-3xl font-bold mb-8 text-center md:text-left"
+        >
           My <span className="text-purple-300">Skills</span>
-        </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        </motion.h3>
+        <motion.div 
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.3
+              }
+            }
+          }}
+        >
           {[
             "C", "C++", "JavaScript", "MongoDB", "Node.js", "Express.js",
             "React.js", "SQL", "Figma", "Python",
             "Java (Learning)", "Spring Boot (Learning)", "Next.js (Learning)", "Git", "Tailwind CSS",
             "Redux", "TypeScript (Learning)", "Docker (Learning)"
           ].map((skill, index) => (
-            <div 
-              key={index} 
-              className="bg-[#1b1638]/50 p-4 text-center rounded-lg border border-[#281f54] hover:border-purple-500/30 hover:bg-[#281f54]/50 transition-all hover:scale-105"
+            <motion.div 
+              key={index}
+              variants={{
+                hidden: { y: 20, opacity: 0 },
+                visible: { y: 0, opacity: 1 }
+              }}
+              whileHover={{ scale: 1.05 }}
+              className="bg-[#1b1638]/50 p-4 text-center rounded-lg border border-[#281f54] hover:border-purple-500/30 hover:bg-[#281f54]/50 transition-all"
             >
               <p className="text-sm md:text-base">{skill}</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
       {/* Hobbies Section */}
-      <section className="px-4 md:px-16 py-12 max-w-4xl mx-auto">
-        <h3 className="text-2xl font-bold mb-6 text-purple-300">My Hobbies</h3>
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInVariants}
+        className="px-4 md:px-16 py-12 max-w-4xl mx-auto"
+      >
+        <motion.h3 
+          whileInView={{ y: 0, opacity: 1 }}
+          initial={{ y: 20, opacity: 0 }}
+          viewport={{ once: true }}
+          className="text-2xl font-bold mb-6 text-purple-300"
+        >
+          My Hobbies
+        </motion.h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {["🎮 Playing Games", "✈️ Travelling", "🎵 Music & Movies", "📚 Reading", "💻 Coding Challenges", "🏸 Sports"].map((hobby, index) => (
-            <div key={index} className="bg-[#1b1638]/50 p-4 rounded-lg border border-[#281f54] hover:border-purple-500/30">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+              className="bg-[#1b1638]/50 p-4 rounded-lg border border-[#281f54] hover:border-purple-500/30"
+            >
               <p>{hobby}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </section>
+      </motion.section>
 
       {/* Activities Section */}
-      <section className="px-4 md:px-16 py-12 max-w-6xl mx-auto">
-        <h3 className="text-2xl font-bold mb-6 text-purple-300">Activities</h3>
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInVariants}
+        className="px-4 md:px-16 py-12 max-w-6xl mx-auto"
+      >
+        <motion.h3 
+          whileInView={{ y: 0, opacity: 1 }}
+          initial={{ y: 20, opacity: 0 }}
+          viewport={{ once: true }}
+          className="text-2xl font-bold mb-6 text-purple-300"
+        >
+          Activities
+        </motion.h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             { 
@@ -285,94 +505,136 @@ const Portfolio = () => {
               description: "Participated in coding competition",
               year: "2024"
             },
-            
           ].map((activity, index) => (
-            <div key={index} className="bg-[#1b1638]/50 p-6 rounded-lg border border-[#281f54] hover:border-purple-500/30 transition-all hover:scale-[1.02]">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.2 }}
+              whileHover={{ scale: 1.02 }}
+              className="bg-[#1b1638]/50 p-6 rounded-lg border border-[#281f54] hover:border-purple-500/30 transition-all"
+            >
               <p className="text-lg font-semibold mb-2">{activity.title}</p>
               <p className="text-sm text-gray-400 mb-3">{activity.description}</p>
               <p className="text-xs text-purple-400/70">{activity.year}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </section>
+      </motion.section>
 
       {/* Contact Section */}
-      <section id="contact" className="px-4 md:px-16 py-12 max-w-6xl mx-auto">
+      <motion.section
+        id="contact"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={containerVariants}
+        className="px-4 md:px-16 py-12 max-w-6xl mx-auto"
+      >
         <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-          <div>
+          <motion.div variants={itemVariants}>
             <h3 className="text-2xl font-bold mb-6 text-purple-300">Contact Me</h3>
             <form className="space-y-4">
-              <input 
+              <motion.input 
+                whileFocus={{ scale: 1.02 }}
                 type="text" 
                 placeholder="Name" 
                 className="w-full px-4 py-3 bg-[#1b1638]/50 border border-[#281f54] rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent" 
               />
-              <input 
+              <motion.input
+                whileFocus={{ scale: 1.02 }}
                 type="email" 
                 placeholder="Email" 
                 className="w-full px-4 py-3 bg-[#1b1638]/50 border border-[#281f54] rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent" 
               />
-              <input 
+              <motion.input
+                whileFocus={{ scale: 1.02 }}
                 type="text" 
                 placeholder="Subject" 
                 className="w-full px-4 py-3 bg-[#1b1638]/50 border border-[#281f54] rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent" 
               />
-              <textarea 
+              <motion.textarea
+                whileFocus={{ scale: 1.02 }}
                 rows="4" 
                 placeholder="Message" 
                 className="w-full px-4 py-3 bg-[#1b1638]/50 border border-[#281f54] rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-transparent"
-              ></textarea>
-              <button className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg w-full md:w-auto">
+              ></motion.textarea>
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg w-full md:w-auto"
+              >
                 Send Message
-              </button>
+              </motion.button>
             </form>
-          </div>
-          <div className="flex flex-col justify-center">
+          </motion.div>
+          <motion.div variants={itemVariants} className="flex flex-col justify-center">
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
-                <div className="p-3 bg-purple-600/20 rounded-full">
+                <motion.div 
+                  whileHover={{ rotate: 10 }}
+                  className="p-3 bg-purple-600/20 rounded-full"
+                >
                   <Phone size={20} className="text-purple-300" />
-                </div>
+                </motion.div>
                 <div>
                   <h4 className="font-semibold">Phone</h4>
                   <p className="text-gray-400">+91-7679004336</p>
                 </div>
               </div>
               <div className="flex items-start space-x-4">
-                <div className="p-3 bg-purple-600/20 rounded-full">
+                <motion.div 
+                  whileHover={{ rotate: 10 }}
+                  className="p-3 bg-purple-600/20 rounded-full"
+                >
                   <Mail size={20} className="text-purple-300" />
-                </div>
+                </motion.div>
                 <div>
                   <h4 className="font-semibold">Email</h4>
                   <p className="text-gray-400">abhirupbasu90@gmail.com</p>
                 </div>
               </div>
               <div className="flex items-start space-x-4">
-                <div className="p-3 bg-purple-600/20 rounded-full">
+                <motion.div 
+                  whileHover={{ rotate: 10 }}
+                  className="p-3 bg-purple-600/20 rounded-full"
+                >
                   <MapPin size={20} className="text-purple-300" />
-                </div>
+                </motion.div>
                 <div>
                   <h4 className="font-semibold">Location</h4>
                   <p className="text-gray-400">Kolkata, West Bengal, India</p>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Footer */}
-      <footer className="text-center text-gray-500 text-sm py-8 border-t border-[#281f54] mt-12">
+      <motion.footer
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="text-center text-gray-500 text-sm py-8 border-t border-[#281f54] mt-12"
+      >
         <div className="max-w-6xl mx-auto px-4">
           <p>&copy; {new Date().getFullYear()} Abhirup Basu. All rights reserved.</p>
           <div className="flex justify-center space-x-6 mt-4">
-            <a href="#" className="text-gray-400 hover:text-purple-300 transition-colors">GitHub</a>
-            <a href="#" className="text-gray-400 hover:text-purple-300 transition-colors">LinkedIn</a>
-            <a href="#" className="text-gray-400 hover:text-purple-300 transition-colors">Twitter</a>
-            <a href="#" className="text-gray-400 hover:text-purple-300 transition-colors">Codeforces</a>
+            {["GitHub", "LinkedIn", "Twitter", "Codeforces"].map((social, index) => (
+              <motion.a
+                key={index}
+                whileHover={{ y: -2, color: "#c084fc" }}
+                href="#" 
+                className="text-gray-400 hover:text-purple-300 transition-colors"
+              >
+                {social}
+              </motion.a>
+            ))}
           </div>
         </div>
-      </footer>
+      </motion.footer>
 
       <ScrollToTop />
     </div>
