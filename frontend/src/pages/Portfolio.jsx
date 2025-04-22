@@ -88,9 +88,35 @@ const ScrollToTop = () => {
 };
 
 const AnimatedBackground = () => {
+  const [scrollY, setScrollY] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+      setHeight(document.body.scrollHeight - window.innerHeight);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Calculate gradient stops based on scroll position
+  const scrollProgress = height > 0 ? Math.min(scrollY / height, 1) : 0;
+
+  // Define color stops that will change based on scroll
+  const color1 = `hsl(${260 + scrollProgress * 60}, 70%, 10%)`;
+  const color2 = `hsl(${280 + scrollProgress * 60}, 70%, 15%)`;
+  const color3 = `hsl(${300 + scrollProgress * 60}, 70%, 20%)`;
+
   return (
     <div className='fixed inset-0 -z-10 overflow-hidden'>
-      <div className='absolute inset-0 bg-gradient-to-br from-[#0e0b1f] via-[#1a1039] to-[#2e1a5e] animate-gradient-shift'></div>
+      <div
+        className='absolute inset-0 transition-colors duration-300'
+        style={{
+          background: `linear-gradient(135deg, ${color1} 0%, ${color2} 50%, ${color3} 100%)`,
+        }}
+      ></div>
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjMDAwMDAwIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDVMNSAwWk02IDRMNCA2Wk0tMSAxTDEgLTFaIiBzdHJva2U9IiMxMTExMTEiIHN0cm9rZS13aWR0aD0iMSI+PC9wYXRoPgo8L3N2Zz4=')] opacity-10"></div>
     </div>
   );
@@ -276,69 +302,59 @@ const Portfolio = () => {
       </motion.section>
 
       {/* My Quality Works */}
-      <motion.section
-        id='works'
-        initial='hidden'
-        whileInView='visible'
-        viewport={{ once: true, margin: "-100px" }}
-        variants={fadeInVariants}
-        className='px-4 md:px-16 py-12 max-w-6xl mx-auto'
-      >
-        <motion.h3
-          whileInView={{ y: 0, opacity: 1 }}
-          initial={{ y: 20, opacity: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className='text-2xl md:text-3xl font-bold mb-8 text-center md:text-left'
+      {[
+        {
+          title: "Dynamic Website",
+          description: "Interactive websites with server-side functionality and databases",
+          tech: "React, Node.js, MongoDB",
+        },
+        {
+          title: "Static Website",
+          description: "Simple websites with fixed content and no databases",
+          tech: "HTML, CSS, JavaScript",
+        },
+        {
+          title: "Chat Application",
+          description: "Real-time chat app application using socket.io, Authentication with JWT (Under Development)",
+          tech: "React, Node, Express, MongoDB, socket.io",
+          github: "https://github.com/yourusername/chat-application",
+        },
+        {
+          title: "Alumni Website(GMIT)",
+          description: "Interactive websites with server-side functionality and databases and Authentication with JWT",
+          tech: "React, Node, Express, MongoDB",
+          github: "https://github.com/Abhirup60/GMIT-Alumnis",
+        },
+        {
+          title: "Social Media",
+          description:
+            "Interactive websites with server-side functionality and database, Like-Unlike & follow-unfollow functionalities also Post option is there and Authentication with JWT",
+          tech: "React, Node, Express, MongoDB",
+          github: "https://github.com/Abhirup60/Social-Media-Web-App-Mern-Stack",
+        },
+      ].map((work, index) => (
+        <motion.div
+          key={index}
+          initial='offscreen'
+          whileInView='onscreen'
+          viewport={{ once: true, amount: 0.2 }}
+          variants={cardVariants}
+          whileHover={{ y: -5 }}
+          className='bg-[#1b1638]/50 hover:bg-[#281f54]/70 p-6 rounded-lg transition-all duration-300 border border-[#281f54] hover:border-purple-500/30 backdrop-blur-sm cursor-pointer group'
         >
-          My <span className='text-purple-300'>Quality</span> Works
-        </motion.h3>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {[
-            {
-              title: "Dynamic Website",
-              description: "Interactive websites with server-side functionality and databases",
-              tech: "React, Node.js, MongoDB",
-            },
-            {
-              title: "Static Website",
-              description: "Simple websites with fixed content and no databases",
-              tech: "HTML, CSS, JavaScript",
-            },
-            {
-              title: "Chat Application",
-              description: "Real-time chat app application using socket.io, Authentication with JWT",
-              tech: "React, Node, Express, MongoDB, socket.io",
-            },
-            {
-              title: "Alumni Website(GMIT)",
-              description:
-                "Interactive websites with server-side functionality and databases and Authentication with JWT",
-              tech: "React, Node, Express, MongoDB",
-            },
-            {
-              title: "Social Media",
-              description:
-                "Interactive websites with server-side functionality and database, Like-Unlike & follow-unfollow functionalities also Post option is there and Authentication with JWT",
-              tech: "React, Node, Express, MongoDB",
-            },
-          ].map((work, index) => (
-            <motion.div
-              key={index}
-              initial='offscreen'
-              whileInView='onscreen'
-              viewport={{ once: true, amount: 0.2 }}
-              variants={cardVariants}
-              whileHover={{ y: -5 }}
-              className='bg-[#1b1638]/50 hover:bg-[#281f54]/70 p-6 rounded-lg transition-all duration-300 border border-[#281f54] hover:border-purple-500/30 backdrop-blur-sm cursor-pointer group'
-            >
-              <h4 className='text-xl font-semibold mb-2 group-hover:text-purple-300 transition-colors'>{work.title}</h4>
-              <p className='text-sm text-gray-400 mb-3'>{work.description}</p>
-              <p className='text-xs text-purple-400/70'>{work.tech}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
+          <h4 className='text-xl font-semibold mb-2 group-hover:text-purple-300 transition-colors'>{work.title}</h4>
+          <p className='text-sm text-gray-400 mb-3'>{work.description}</p>
+          <p className='text-xs text-purple-400/70 mb-2'>{work.tech}</p>
+          <a
+            href={work.github}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='inline-flex items-center justify-center w-9 h-9 rounded-full bg-purple-400/20 hover:bg-purple-400/40 text-purple-300 hover:text-white transition-colors'
+          >
+            <img src='https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/github.svg' alt='GitHub' className='w-5 h-5' />
+          </a>
+        </motion.div>
+      ))}
 
       {/* Experience and Education */}
       <motion.section
@@ -353,9 +369,9 @@ const Portfolio = () => {
             <h3 className='text-2xl font-bold mb-6 text-purple-300'>My Experience</h3>
             <div className='space-y-4'>
               {[
-                { year: "2024", title: "Web Developer Internship", company: "Tech Solutions Inc." },
-                { year: "2023", title: "Web Development Training", company: "Code Academy" },
-                { year: "2024", title: "Full Stack Developer Training", company: "Dev Masters" },
+                { year: "2024", title: "Web Developer Internship", company: "Cognifyz Technologies" },
+                { year: "2023", title: "Web Development Training", company: "Euphoria Genx" },
+                { year: "2024", title: "Full Stack Developer Training", company: "Euphoria Genx" },
               ].map((exp, index) => (
                 <motion.div
                   key={index}
@@ -414,8 +430,9 @@ const Portfolio = () => {
         >
           My <span className='text-purple-300'>Skills</span>
         </motion.h3>
+
         <motion.div
-          className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4'
+          className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6'
           initial='hidden'
           whileInView='visible'
           viewport={{ once: true }}
@@ -431,24 +448,52 @@ const Portfolio = () => {
           }}
         >
           {[
-            "C",
-            "C++",
-            "JavaScript",
-            "MongoDB",
-            "Node.js",
-            "Express.js",
-            "React.js",
-            "SQL",
-            "Figma",
-            "Python",
-            "Java (Learning)",
-            "Spring Boot (Learning)",
-            "Next.js (Learning)",
-            "Git",
-            "Tailwind CSS",
-            "Redux",
-            "TypeScript (Learning)",
-            "Docker (Learning)",
+            { name: "C", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" },
+            {
+              name: "C++",
+              icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg",
+            },
+            {
+              name: "JavaScript",
+              icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+            },
+            {
+              name: "MongoDB",
+              icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
+            },
+            { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
+            {
+              name: "Express.js",
+              icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg",
+            },
+            { name: "React.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+            { name: "SQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
+            { name: "Figma", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" },
+            { name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
+            {
+              name: "Java (Learning)",
+              icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg",
+            },
+            {
+              name: "Spring Boot (Learning)",
+              icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg",
+            },
+            {
+              name: "Next.js (Learning)",
+              icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
+            },
+            { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
+            { name: "Tailwind CSS", icon: "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" },
+
+            { name: "Redux", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redux/redux-original.svg" },
+            {
+              name: "TypeScript (Learning)",
+              icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+            },
+            {
+              name: "Docker (Learning)",
+              icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+            },
           ].map((skill, index) => (
             <motion.div
               key={index}
@@ -457,9 +502,10 @@ const Portfolio = () => {
                 visible: { y: 0, opacity: 1 },
               }}
               whileHover={{ scale: 1.05 }}
-              className='bg-[#1b1638]/50 p-4 text-center rounded-lg border border-[#281f54] hover:border-purple-500/30 hover:bg-[#281f54]/50 transition-all'
+              className='bg-[#1b1638]/50 p-4 text-center rounded-xl border border-[#281f54] hover:border-purple-400/30 hover:bg-[#281f54]/60 transition-all flex flex-col items-center justify-center space-y-3'
             >
-              <p className='text-sm md:text-base'>{skill}</p>
+              <img src={skill.icon} alt={skill.name} className='w-10 h-10 md:w-12 md:h-12 object-contain' />
+              <p className='text-sm md:text-base text-white'>{skill.name}</p>
             </motion.div>
           ))}
         </motion.div>
