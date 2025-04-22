@@ -340,7 +340,7 @@ const Portfolio = () => {
           viewport={{ once: true, amount: 0.2 }}
           variants={cardVariants}
           whileHover={{ y: -5 }}
-          className='bg-[#1b1638]/50 hover:bg-[#281f54]/70 p-6 rounded-lg transition-all duration-300 border border-[#281f54] hover:border-purple-500/30 backdrop-blur-sm cursor-pointer group'
+          className='bg-[#1b1638]/50 hover:bg-[#281f54]/70 p-6 m-4 rounded-lg transition-all duration-300 border border-[#281f54] hover:border-purple-500/30 backdrop-blur-sm cursor-pointer group'
         >
           <h4 className='text-xl font-semibold mb-2 group-hover:text-purple-300 transition-colors'>{work.title}</h4>
           <p className='text-sm text-gray-400 mb-3'>{work.description}</p>
